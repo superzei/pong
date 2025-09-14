@@ -43,11 +43,16 @@ layout_mode = 2
 [node name="ButtonContainer" type="VBoxContainer" parent="VBoxContainer/CenterContainer"]
 layout_mode = 2
 
+[node name="StartSplit" type="Button" parent="VBoxContainer/CenterContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Start"
+
 [node name="Start" type="Button" parent="VBoxContainer/CenterContainer/ButtonContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 toggle_mode = true
-text = "Start"
+text = "Start Server"
 
 [node name="Connect" type="Button" parent="VBoxContainer/CenterContainer/ButtonContainer"]
 layout_mode = 2
@@ -77,6 +82,7 @@ placeholder_text = "43852"
 [node name="ConnectAccept" type="Button" parent="VBoxContainer/CenterContainer/ConnectMenu"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
+toggle_mode = true
 text = "Connect"
 
 [node name="Return" type="Button" parent="VBoxContainer/CenterContainer/ConnectMenu"]
@@ -84,7 +90,8 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Return"
 
+[connection signal="pressed" from="VBoxContainer/CenterContainer/ButtonContainer/StartSplit" to="." method="_on_start_split_pressed"]
 [connection signal="toggled" from="VBoxContainer/CenterContainer/ButtonContainer/Start" to="." method="_on_start_toggled"]
 [connection signal="pressed" from="VBoxContainer/CenterContainer/ButtonContainer/Connect" to="." method="_on_connect_pressed"]
-[connection signal="pressed" from="VBoxContainer/CenterContainer/ConnectMenu/ConnectAccept" to="." method="_on_connect_accept_pressed"]
+[connection signal="toggled" from="VBoxContainer/CenterContainer/ConnectMenu/ConnectAccept" to="." method="_on_connect_accept_toggled"]
 [connection signal="pressed" from="VBoxContainer/CenterContainer/ConnectMenu/Return" to="." method="_on_return_pressed"]

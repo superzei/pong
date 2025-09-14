@@ -26,10 +26,10 @@ func _on_start_toggled(toggled_on: bool) -> void:
 		$VBoxContainer/CenterContainer/ButtonContainer/Start.text = "Waiting for peer..."
 		Multiplayer.create_server()
 	else:
-		$VBoxContainer/CenterContainer/ButtonContainer/Start.text = "Start"
-		Multiplayer.teardown_server()
+		$VBoxContainer/CenterContainer/ButtonContainer/Start.text = "Start Server"
+		Multiplayer.teardown()
 
-func _on_connect_accept_pressed() -> void:
+func connect_to_server() -> void:
 	var ip = $VBoxContainer/CenterContainer/ConnectMenu/IpPortCombo/IP.text
 	var port = $VBoxContainer/CenterContainer/ConnectMenu/IpPortCombo/Port.text
 	
@@ -40,3 +40,19 @@ func _on_connect_accept_pressed() -> void:
 		port = $VBoxContainer/CenterContainer/ConnectMenu/IpPortCombo/Port.placeholder_text
 		
 	Multiplayer.create_client(ip, int(port))
+
+func set_inputs(enabled: bool):
+	$VBoxContainer/CenterContainer/ConnectMenu/IpPortCombo/IP.editable = enabled
+	$VBoxContainer/CenterContainer/ConnectMenu/IpPortCombo/Port.editable = enabled
+	
+func _on_connect_accept_toggled(toggled_on: bool) -> void:
+	set_inputs(not toggled_on)
+	if toggled_on:
+		$VBoxContainer/CenterContainer/ConnectMenu/ConnectAccept.text = "Connecting..."
+		connect_to_server()
+	else:
+		$VBoxContainer/CenterContainer/ConnectMenu/ConnectAccept.text = "Connect"
+		Multiplayer.teardown()
+
+func _on_start_split_pressed() -> void:
+	start_game()

@@ -10,6 +10,17 @@ var peer: ENetMultiplayerPeer
 signal peer_connected
 signal connected_to_server
 
+func is_multiplayer():
+	return peer != null
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		teardown()
+		get_tree().quit() # default behavior
+
+func peer_disconnected(peer_id: int):
+	get_tree().change_scene_to_file("res://levels/main_menu.tscn")
+
 func client_connected(peer_id: int):
 	peer_connected.emit()
 
@@ -18,8 +29,9 @@ func create_server():
 	peer.create_server(PORT, MAX_CLIENT)
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(client_connected)
+	multiplayer.peer_disconnected.connect(peer_disconnected)
 	
-func teardown_server():
+func teardown():
 	multiplayer.multiplayer_peer = null
 	peer.close()
 	peer = null

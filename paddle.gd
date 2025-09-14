@@ -20,6 +20,8 @@ func set_paddle_color():
 	
 func _enter_tree() -> void:
 	# multiplayer, right paddle is for client
+	if not Multiplayer.is_multiplayer(): return
+	
 	var peer_id = multiplayer.get_unique_id()
 	if Position == PaddlePosition.RIGHT:
 		if Multiplayer.multiplayer.is_server():
