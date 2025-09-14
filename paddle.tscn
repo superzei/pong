@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://dla8aud21380s"]
+
+[ext_resource type="Script" path="res://paddle.gd" id="1_ek11n"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0e21k"]
+albedo_color = Color(0, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_11t54"]
+material = SubResource("StandardMaterial3D_0e21k")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gkbng"]
+size = Vector3(0.5, 3, 0.5)
+
+[node name="Paddle" type="CharacterBody3D"]
+motion_mode = 1
+script = ExtResource("1_ek11n")
+
+[node name="PaddleMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.5, 0, 0, 0, 3, 0, 0, 0, 0.5, 0, 0, 0)
+mesh = SubResource("BoxMesh_11t54")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_gkbng")

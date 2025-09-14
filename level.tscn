@@ -1,0 +1,120 @@
+[gd_scene load_steps=12 format=3 uid="uid://dqe7m50kgp4ap"]
+
+[ext_resource type="PackedScene" uid="uid://dla8aud21380s" path="res://paddle.tscn" id="1_ajr0u"]
+[ext_resource type="PackedScene" uid="uid://cdu6qdkunpq5n" path="res://ball.tscn" id="2_h2ohi"]
+[ext_resource type="PackedScene" uid="uid://dhpt85hp0p802" path="res://hud_view.tscn" id="3_rg1ma"]
+[ext_resource type="PackedScene" uid="uid://cr6jl5l56g26v" path="res://collision_box.tscn" id="4_s6do4"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_tj0sm"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_5ao65"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+
+[sub_resource type="Environment" id="Environment_ffpgo"]
+background_mode = 1
+ssil_enabled = true
+ssil_radius = 3.0
+glow_enabled = true
+glow_strength = 0.75
+glow_bloom = 0.15
+glow_blend_mode = 1
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_juioc"]
+size = Vector3(30, 0.2, 20)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_g2j5v"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_mrqaj"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_mw31d"]
+viewport_path = NodePath("HUD/SubViewport")
+
+[node name="Level" type="Node3D"]
+
+[node name="Backdrop" type="StaticBody3D" parent="."]
+
+[node name="BackdropMesh" type="MeshInstance3D" parent="Backdrop"]
+transform = Transform3D(15, 0, 0, 0, -6.55671e-07, -15, 0, 15, -6.55671e-07, 0, 0, 0)
+mesh = SubResource("PlaneMesh_tj0sm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Backdrop"]
+transform = Transform3D(15, 0, 0, 0, -6.55671e-07, -15, 0, 15, -6.55671e-07, 0, 0, 0)
+shape = SubResource("ConcavePolygonShape3D_5ao65")
+
+[node name="Camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
+
+[node name="LeftPaddle" parent="." instance=ExtResource("1_ajr0u")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -10, 0, 1)
+Position = 0
+
+[node name="Right Paddle" parent="." instance=ExtResource("1_ajr0u")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 10, 0, 1)
+
+[node name="LowerLight" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.735471, -0.677557, 0, 0.677557, 0.735471, 0, -0.790649, 8.80975)
+light_color = Color(0, 0.12549, 0.584314, 1)
+light_energy = 2.0
+spot_range = 20.5465
+spot_angle = 60.9305
+
+[node name="UpperLight" type="SpotLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.463296, 0.886204, 0, -0.886204, 0.463296, 0, 2.72107, 8.80975)
+light_color = Color(0.913725, 0, 0.0156863, 1)
+spot_range = 14.2055
+spot_angle = 48.665
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ffpgo")
+
+[node name="UpperBoundingBox" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="UpperBoundingBox"]
+shape = SubResource("BoxShape3D_juioc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="UpperBoundingBox"]
+transform = Transform3D(10, 0, 0, 0, -10, 7.54979e-07, 0, -1.50996e-06, -5, 0, 0, 4)
+mesh = SubResource("PlaneMesh_g2j5v")
+
+[node name="UpperBoundingBox2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5.045, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="UpperBoundingBox2"]
+shape = SubResource("WorldBoundaryShape3D_mrqaj")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="UpperBoundingBox2"]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 5, 0, 0, 4)
+mesh = SubResource("PlaneMesh_g2j5v")
+
+[node name="Ball" parent="." instance=ExtResource("2_h2ohi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+collision_layer = 5
+collision_mask = 5
+velocity = Vector3(5, 3, 0)
+
+[node name="HUD" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.94211)
+layers = 2
+texture = SubResource("ViewportTexture_mw31d")
+
+[node name="SubViewport" type="SubViewport" parent="HUD"]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="HUDView" parent="HUD/SubViewport" instance=ExtResource("3_rg1ma")]
+
+[node name="LeftCollisionBox" parent="." instance=ExtResource("4_s6do4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.841863, 0, 0)
+collision_layer = 4
+collision_mask = 4
+
+[node name="RightCollisionBox" parent="." instance=ExtResource("4_s6do4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24.4814, 0, 0)
+
+[connection signal="body_entered" from="LeftCollisionBox" to="Ball" method="_on_left_collision_box_body_entered"]
+[connection signal="body_entered" from="RightCollisionBox" to="Ball" method="_on_right_collision_box_body_entered"]
+
+[editable path="HUD/SubViewport/HUDView"]
