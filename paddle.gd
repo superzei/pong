@@ -17,6 +17,14 @@ func set_paddle_color():
 		material.emission = "red"
 	new_mesh.surface_set_material(0, material)
 	$PaddleMesh.mesh = new_mesh
+	
+func _enter_tree() -> void:
+	# multiplayer, right paddle is for client
+	var peer_id = multiplayer.get_unique_id()
+	if Position == PaddlePosition.RIGHT:
+		if Multiplayer.multiplayer.is_server():
+			peer_id = Multiplayer.multiplayer.get_peers()[0]
+		set_multiplayer_authority(peer_id)
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -24,6 +32,9 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if not is_multiplayer_authority(): 
+		return
+	
 	if (Input.is_action_pressed("UpLeft") and Position == PaddlePosition.LEFT) or (Input.is_action_pressed("UpRight") and Position == PaddlePosition.RIGHT):
 		velocity.y = SPEED
 	elif (Input.is_action_pressed("DownLeft") and Position == PaddlePosition.LEFT) or (Input.is_action_pressed("DownRight") and Position == PaddlePosition.RIGHT):

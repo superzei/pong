@@ -1,0 +1,90 @@
+[gd_scene load_steps=3 format=3 uid="uid://b3e1mj2cv1222"]
+
+[ext_resource type="Script" path="res://levels/main_menu.gd" id="1_1jcfd"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_tbpcl"]
+font_size = 150
+outline_size = 6
+outline_color = Color(0.834239, 0.421631, 0.942237, 1)
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1jcfd")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 150
+text = "PONG"
+label_settings = SubResource("LabelSettings_tbpcl")
+horizontal_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="ButtonContainer" type="VBoxContainer" parent="VBoxContainer/CenterContainer"]
+layout_mode = 2
+
+[node name="Start" type="Button" parent="VBoxContainer/CenterContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+toggle_mode = true
+text = "Start"
+
+[node name="Connect" type="Button" parent="VBoxContainer/CenterContainer/ButtonContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Connect to a server"
+
+[node name="ConnectMenu" type="VBoxContainer" parent="VBoxContainer/CenterContainer"]
+visible = false
+layout_mode = 2
+
+[node name="IpPortCombo" type="HBoxContainer" parent="VBoxContainer/CenterContainer/ConnectMenu"]
+layout_mode = 2
+
+[node name="IP" type="TextEdit" parent="VBoxContainer/CenterContainer/ConnectMenu/IpPortCombo"]
+custom_minimum_size = Vector2(250, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+placeholder_text = "localhost"
+context_menu_enabled = false
+
+[node name="Port" type="TextEdit" parent="VBoxContainer/CenterContainer/ConnectMenu/IpPortCombo"]
+custom_minimum_size = Vector2(100, 30)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+placeholder_text = "43852"
+
+[node name="ConnectAccept" type="Button" parent="VBoxContainer/CenterContainer/ConnectMenu"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Connect"
+
+[node name="Return" type="Button" parent="VBoxContainer/CenterContainer/ConnectMenu"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Return"
+
+[connection signal="toggled" from="VBoxContainer/CenterContainer/ButtonContainer/Start" to="." method="_on_start_toggled"]
+[connection signal="pressed" from="VBoxContainer/CenterContainer/ButtonContainer/Connect" to="." method="_on_connect_pressed"]
+[connection signal="pressed" from="VBoxContainer/CenterContainer/ConnectMenu/ConnectAccept" to="." method="_on_connect_accept_pressed"]
+[connection signal="pressed" from="VBoxContainer/CenterContainer/ConnectMenu/Return" to="." method="_on_return_pressed"]
